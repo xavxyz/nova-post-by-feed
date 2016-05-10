@@ -23,20 +23,15 @@ Package.onUse(function(api) {
     'nova:posts@0.26.1-nova',
     'nova:users@0.26.1-nova',
     'nova:settings@0.26.1-nova',
+    'nova:base-components@0.26.1-nova',
   ]);
 
   api.addFiles([
-    'lib/collection.js',
-    'lib/custom_fields.js',
-    'lib/methods.js',
+    'lib/modules.js',
   ], ['client', 'server']);
-
   
-
   api.addFiles([
-    'lib/server/fetch_feeds.js',
-    'lib/server/cron.js',
-    'lib/server/publications.js',
+    'lib/server/server_modules.js',
   ], ['server']);
 
   // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];

@@ -28,6 +28,8 @@ class FeedsItem extends Component {
   
   render() {
 
+    ({UsersAvatar, UsersName} = Telescope.components);
+
     const feed = this.props.feed;
 
     return (

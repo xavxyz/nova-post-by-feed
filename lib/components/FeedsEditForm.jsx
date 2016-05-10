@@ -24,7 +24,7 @@ class FeedsEditForm extends Component {
           component={NovaForm}
           componentProps={{
             collection: Feeds,
-            currentUser: this.context.currentUser,
+            currentUser: this.props.currentUser,
             methodName: "feeds.new",
             successCallback: () => {
               Messages.flash("Feed added.", "success");
@@ -46,7 +46,7 @@ class FeedsEditForm extends Component {
   }
 }
 
-FeedsEditForm.contextTypes = {
+FeedsEditForm.propsType = {
   currentUser: React.PropTypes.object
 };
 
