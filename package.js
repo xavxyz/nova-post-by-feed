@@ -22,7 +22,9 @@ Package.onUse(function(api) {
     'nova:lib@0.26.1-nova',
     'nova:posts@0.26.1-nova',
     'nova:users@0.26.1-nova',
+    'nova:categories@0.26.1-nova',
     'nova:settings@0.26.1-nova',
+    'nova:events@0.26.1-nova',
     'nova:base-components@0.26.1-nova',
   ]);
 
