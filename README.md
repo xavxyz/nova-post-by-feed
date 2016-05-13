@@ -7,7 +7,7 @@ This package lets you register RSS feeds that will be fetched every 30 minutes a
 ## Install the package
 First, install the package in your Nova app, type: 
 ```bash
-meteor add nova:post-by-feed
+meteor add xavcz:nova-post-by-feed
 ```
 
 ## How to use
