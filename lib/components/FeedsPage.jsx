@@ -1,17 +1,12 @@
 import React, { PropTypes, Component } from 'react';
-
-import SmartContainers from "meteor/utilities:react-list-container";
-const ListContainer = SmartContainers.ListContainer;
+import { ListContainer } from "meteor/utilities:react-list-container";
 
 class FeedsPage extends Component {
 
   render() {
-
-    ({FeedsNewForm, FeedsList} = Telescope.components);
-
     return (
       <div className="feeds-edit-form">
-        <FeedsNewForm currentUser={ this.props.currentUser } />
+        <Telescope.components.FeedsNewForm currentUser={ this.props.currentUser } />
         
         <ListContainer
           collection={ Feeds }
@@ -19,7 +14,7 @@ class FeedsPage extends Component {
           selector={{}}
           terms={{}}
           joins={ Feeds.getJoins() }
-          component={ FeedsList }
+          component={ Telescope.components.FeedsList }
           cacheSubscription={ false }
         />
       </div>

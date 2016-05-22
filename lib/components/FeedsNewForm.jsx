@@ -1,11 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import NovaForm from "meteor/nova:forms";
-
-import SmartContainers from "meteor/utilities:react-list-container";
-const ListContainer = SmartContainers.ListContainer;
-
-import Core from "meteor/nova:core";
-const Messages = Core.Messages;
+import { ListContainer } from "meteor/utilities:react-list-container";
+import { Messages } from "meteor/nova:core";
 
 const FeedsNewForm = ({ currentUser }) => {
   return (

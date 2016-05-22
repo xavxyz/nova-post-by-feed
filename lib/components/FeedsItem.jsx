@@ -1,11 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import NovaForm from "meteor/nova:forms";
-
-import SmartContainers from "meteor/utilities:react-list-container";
-const DocumentContainer = SmartContainers.DocumentContainer;
-
-import Core from "meteor/nova:core";
-const Messages = Core.Messages;
+import { DocumentContainer } from "meteor/utilities:react-list-container";
+import { Messages } from "meteor/nova:core";
 
 class FeedsItem extends Component {
 
@@ -20,21 +16,15 @@ class FeedsItem extends Component {
   }
 
   renderCategories() {
-
-    ({ PostsCategories } = Telescope.components);
-
-    return this.props.feed.categoriesArray ? <PostsCategories post={ this.props.feed } /> : "";
+    return this.props.feed.categoriesArray ? <Telescope.components.PostsCategories post={ this.props.feed } /> : "";
   }
 
   renderActions() {
-
-    ({ Icon } = Telescope.components);
-
     return this.props.feed.createdFromSettings
           ? <span>This feed has been added from your settings.json file, you cannot edit or remove it the client. Please make your modifications in your settings file.</span>
           : <div className="post-stats">
-              <span className="posts-stats-item" title="Edit"><a onClick={this.editFeed}><Icon name="pencil"/><span className="sr-only">Edit</span></a></span>
-              <span className="posts-stats-item" title="Delete"><a onClick={this.removeFeed}><Icon name="close"/><span className="sr-only">Delete</span></a></span>
+              <span className="posts-stats-item" title="Edit"><a onClick={this.editFeed}><Telescope.components.Icon name="pencil"/><span className="sr-only">Edit</span></a></span>
+              <span className="posts-stats-item" title="Delete"><a onClick={this.removeFeed}><Telescope.components.Icon name="close"/><span className="sr-only">Delete</span></a></span>
             </div>
   }
 
@@ -58,9 +48,6 @@ class FeedsItem extends Component {
   }
   
   render() {
-
-    ({ UsersAvatar, UsersName } = Telescope.components);
-
     const { feed, currentUser } = this.props;
 
     return (
@@ -98,7 +85,13 @@ class FeedsItem extends Component {
                 <div className="feeds-item-link"><a href={ feed.url }>{feed.url }</a></div>
 
                 <div className="posts-item-meta">
-                  { feed.user ? <div className="posts-item-user"><UsersAvatar user={ feed.user } size="small"/><UsersName user={ feed.user }/></div> : null }
+                  { feed.user
+                    ? (
+                      <div className="posts-item-user">
+                        <Telescope.components.UsersAvatar user={ feed.user } size="small"/>
+                        <Telescope.components.UsersName user={ feed.user }/>
+                      </div>
+                    ) : null }
                   { this.renderActions() }
                 </div>
               </div>
