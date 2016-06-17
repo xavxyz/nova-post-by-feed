@@ -37,16 +37,10 @@ With this methods, you don't need to import the package's components anywhere. J
 **Note:** a feeds entry **must contain a url key**, other fields are optional. You can add as many as you want.
 
 #### Example 2: Route style (easy)
-Create a route where you handle your routes in your app and imports the `FeedsPage`.
+Add a route to the `Telescope.routes` namespace with the `FeedsPage` component.
 
 ```
-FlowRouter.route("feeds.edit", {
-  path: "/feeds",
-  action(params, queryParams) {
-    ({App,FeedsPage} = Telescope.components);
-    mount(App, {content: <FeedsPage currentUser={Meteor.user()} />});
-  }
-});
+Telescope.routes.add([{ name:"feeds", path:"feeds", component:Telescope.components.FeedsPage }]);
 ```
 
 **Note:** it's not recommended to edit the `nova:base-routes` package as you might have conflict with Nova's updates.
