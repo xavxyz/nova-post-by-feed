@@ -1,7 +1,7 @@
 Package.describe({
   name: "xavcz:nova-post-by-feed",
   summary: "Auto post via RSS to Nova, additional feature not part of core",
-  version: "0.26.3-nova",
+  version: "0.26.3-nova-c",
   git: "https://github.com/TelescopeJS/telescope-post-by-feed.git"
 });
 
@@ -17,14 +17,14 @@ Package.onUse(function(api) {
   api.versionsFrom("METEOR@1.0");
 
   api.use([
-    'nova:core@0.26.2-nova',
-    'nova:lib@0.26.2-nova',
-    'nova:posts@0.26.2-nova',
-    'nova:users@0.26.2-nova',
-    'nova:categories@0.26.2-nova',
-    'nova:settings@0.26.2-nova',
-    'nova:events@0.26.2-nova',
-    'nova:base-components@0.26.2-nova',
+    'nova:core@0.26.3-nova',
+    'nova:lib@0.26.3-nova',
+    'nova:posts@0.26.3-nova',
+    'nova:users@0.26.3-nova',
+    'nova:categories@0.26.3-nova',
+    'nova:settings@0.26.3-nova',
+    'nova:events@0.26.3-nova',
+    'nova:base-components@0.26.3-nova',
   ]);
 
   api.addFiles([

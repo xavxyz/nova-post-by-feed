@@ -67,7 +67,7 @@ modules-runtime@0.6.4
 mongo@1.1.8
 mongo-id@1.0.5
 mongo-livedata@1.0.12
-nova:base-components@0.26.2-nova
+nova:base-components@0.26.3-nova
 nova:categories@0.26.3-nova
 nova:comments@0.26.3-nova
 nova:core@0.26.3-nova
@@ -106,7 +106,7 @@ spacebars-compiler@1.0.12
 standard-minifier-css@1.0.7
 standard-minifier-js@1.0.7
 standard-minifiers@1.0.6
-std:accounts-ui@1.1.20
+std:accounts-ui@1.2.6
 tmeasday:check-npm-versions@0.3.1
 tmeasday:publish-counts@0.7.3
 tracker@1.0.14
@@ -118,4 +118,4 @@ utilities:smart-methods@0.1.5
 utilities:smart-publications@0.1.4
 webapp@1.2.9
 webapp-hashing@1.0.9
-xavcz:nova-post-by-feed@0.26.3-nova
+xavcz:nova-post-by-feed@0.26.3-nova-c
