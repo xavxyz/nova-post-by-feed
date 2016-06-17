@@ -1,9 +1,9 @@
 import React, { PropTypes, Component } from 'react';
+import { intlShape } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
 import { ListContainer } from "meteor/utilities:react-list-container";
-import { Messages } from "meteor/nova:core";
 
-const FeedsNewForm = ({ currentUser }) => {
+const FeedsNewForm = (props, context) => {
   return (
     <div>
       <p>Add a new feed:</p>
@@ -15,16 +15,21 @@ const FeedsNewForm = ({ currentUser }) => {
         component={ NovaForm }
         componentProps={{
           collection: Feeds,
-          currentUser,
+          currentUser: context.currentUser,
           methodName: "feeds.new",
           successCallback: () => {
-            Messages.flash("Feed added.", "success");
+            context.messages.flash("Feed added.", "success");
           },
-          labelFunction: fieldName => Telescope.utils.getFieldLabel(fieldName, Feeds)
         }}
       />
     </div>
   )
+};
+
+FeedsNewForm.contextTypes = {
+  currentUser: React.PropTypes.object,
+  messages: React.PropTypes.object,
+  intl: intlShape
 };
 
 module.exports = FeedsNewForm;

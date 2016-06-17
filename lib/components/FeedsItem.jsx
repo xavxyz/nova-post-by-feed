@@ -1,7 +1,8 @@
 import React, { PropTypes, Component } from 'react';
+import { intlShape } from 'react-intl';
+
 import NovaForm from "meteor/nova:forms";
 import { DocumentContainer } from "meteor/utilities:react-list-container";
-import { Messages } from "meteor/nova:core";
 
 class FeedsItem extends Component {
 
@@ -48,7 +49,8 @@ class FeedsItem extends Component {
   }
   
   render() {
-    const { feed, currentUser } = this.props;
+    const { feed } = this.props;
+    const { currentUser, messages } = this.context;
 
     return (
       <div className="posts-item">
@@ -67,10 +69,9 @@ class FeedsItem extends Component {
                     currentUser,
                     methodName: "feeds.edit",
                     successCallback: () => {
-                      Messages.flash("Feed edited.", "success");
+                      messages.flash("Feed edited.", "success");
                       this.setState({ edited: false });
                     },
-                    labelFunction: fieldName => Telescope.utils.getFieldLabel(fieldName, Feeds)
                   }}
                 />
                 <div>
@@ -103,7 +104,12 @@ class FeedsItem extends Component {
   
 FeedsItem.propTypes = {
   feed: React.PropTypes.object.isRequired,
-  currentUser: React.PropTypes.object
+};
+
+FeedsItem.contextTypes = {
+  currentUser: React.PropTypes.object,
+  messages: React.PropTypes.object,
+  intl: intlShape
 };
 
 module.exports = FeedsItem;

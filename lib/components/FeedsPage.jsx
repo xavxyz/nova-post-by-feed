@@ -6,7 +6,7 @@ class FeedsPage extends Component {
   render() {
     return (
       <div className="feeds-edit-form">
-        <Telescope.components.FeedsNewForm currentUser={ this.props.currentUser } />
+        <Telescope.components.FeedsNewForm />
         
         <ListContainer
           collection={ Feeds }
@@ -21,10 +21,6 @@ class FeedsPage extends Component {
     );
   }
 }
-
-FeedsPage.propsType = {
-  currentUser: React.PropTypes.object
-};
 
 module.exports = FeedsPage;
 export default FeedsPage;
