@@ -1,7 +1,7 @@
 Package.describe({
   name: "xavcz:nova-post-by-feed",
   summary: "Auto post via RSS to Nova, additional feature not part of core",
-  version: "0.26.3-nova-c",
+  version: "0.26.3-nova-d",
   git: "https://github.com/TelescopeJS/telescope-post-by-feed.git"
 });
 
@@ -9,7 +9,8 @@ Npm.depends({
   'feedparser': '1.0.0',
   'to-markdown': '0.0.2',
   'he': '0.5.0',
-  'iconv-lite': '0.4.7'
+  'iconv-lite': '0.4.7',
+  'moment': '2.13.0',
 });
 
 Package.onUse(function(api) {
