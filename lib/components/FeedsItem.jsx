@@ -41,9 +41,9 @@ class FeedsItem extends Component {
   removeFeed() {
     const feed = this.props.feed;
     if (window.confirm(`Delete feed “${ feed.title }”?`)) {
-      Meteor.call('feeds.deleteById', feed._id, (error, result) => {
-        Messages.flash(`Feed “${ feed.title }” deleted.`, "success");
-        Events.track("feed deleted", { _id: feed._id });
+      this.context.actions.call('feeds.deleteById', feed._id, (error, result) => {
+        this.context.flash(`Feed “${ feed.title }” deleted.`, "success");
+        this.context.events.track("feed deleted", { _id: feed._id });
       });
     }
   }
@@ -108,6 +108,8 @@ FeedsItem.propTypes = {
 
 FeedsItem.contextTypes = {
   currentUser: React.PropTypes.object,
+  actions: React.PropTypes.object,
+  events: React.PropTypes.object,
   messages: React.PropTypes.object,
   intl: intlShape
 };
