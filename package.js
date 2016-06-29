@@ -1,8 +1,8 @@
 Package.describe({
   name: "xavcz:nova-post-by-feed",
   summary: "Auto post via RSS to Nova, additional feature not part of core",
-  version: "0.26.3-nova-d",
-  git: "https://github.com/TelescopeJS/telescope-post-by-feed.git"
+  version: "0.2.0",
+  git: "https://github.com/xavcz/nova-post-by-feed.git"
 });
 
 Npm.depends({
@@ -28,19 +28,8 @@ Package.onUse(function(api) {
     'nova:base-components@0.26.3-nova',
   ]);
 
-  api.addFiles([
-    'lib/modules.js',
-  ], ['client', 'server']);
-  
-  api.addFiles([
-    'lib/server/server_modules.js',
-  ], ['server']);
-
-  // var languages = ["ar", "bg", "cs", "da", "de", "el", "en", "es", "et", "fr", "hu", "id", "it", "ja", "kk", "ko", "nl", "pl", "pt-BR", "ro", "ru", "sl", "sv", "th", "tr", "vi", "zh-CN"];
-  // var languagesPaths = languages.map(function (language) {
-  //   return "i18n/"+language+".i18n.json";
-  // });
-  // api.addFiles(languagesPaths, ["client", "server"]);
+  api.mainModule('lib/client.js', 'client');
+  api.mainModule('lib/server.js', 'server');
 
   api.export([
     'Feeds'
