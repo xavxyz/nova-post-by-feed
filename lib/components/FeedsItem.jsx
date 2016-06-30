@@ -42,8 +42,12 @@ class FeedsItem extends Component {
     const feed = this.props.feed;
     if (window.confirm(`Delete feed “${ feed.title }”?`)) {
       this.context.actions.call('feeds.deleteById', feed._id, (error, result) => {
-        this.context.flash(`Feed “${ feed.title }” deleted.`, "success");
-        this.context.events.track("feed deleted", { _id: feed._id });
+        if (error) {
+          this.context.messages.flash(error.message, "error");
+        } else {
+          this.context.messages.flash(`Feed “${ feed.title }” deleted.`, "success");
+          this.context.events.track("feed deleted", { _id: feed._id });
+        }
       });
     }
   }
