@@ -1,7 +1,7 @@
 Package.describe({
   name: "xavcz:nova-post-by-feed",
   summary: "Auto post via RSS to Nova, additional feature not part of core",
-  version: "0.26.4-nova-b",
+  version: "0.26.5-nova",
   git: "https://github.com/xavcz/nova-post-by-feed.git"
 });
 
@@ -18,14 +18,14 @@ Package.onUse(function(api) {
   api.versionsFrom("METEOR@1.0");
 
   api.use([
-    'nova:core@0.26.4-nova',
-    'nova:lib@0.26.4-nova',
-    'nova:posts@0.26.4-nova',
-    'nova:users@0.26.4-nova',
-    'nova:categories@0.26.4-nova',
-    'nova:settings@0.26.4-nova',
-    'nova:events@0.26.4-nova',
-    'nova:base-components@0.26.4-nova',
+    'nova:core@0.26.5-nova',
+    'nova:lib@0.26.5-nova',
+    'nova:posts@0.26.5-nova',
+    'nova:users@0.26.5-nova',
+    'nova:categories@0.26.5-nova',
+    'nova:settings@0.26.5-nova',
+    'nova:events@0.26.5-nova',
+    'nova:base-components@0.26.5-nova',
   ]);
 
   api.mainModule('lib/client.js', 'client');
