@@ -142,8 +142,8 @@ class UsersMenuWithFeed extends UsersMenu {
           <Dropdown.Menu>
             <MenuItem className="dropdown-item" eventKey="1" href={Router.path("users.single", {slug: user.telescope.slug})}>Profile</MenuItem>
             <MenuItem className="dropdown-item" eventKey="2" href={Router.path("account")}>Edit Account</MenuItem>
-            {Users.is.admin(user) ? <MenuItem className="dropdown-item" eventKey="3" onClick={this.openModal('settings')}>Settings</MenuItem> : null}
-            {Users.is.admin(user) ? <MenuItem className="dropdown-item" eventKey="4" onClick={this.openModal('feeds')}>Imported Feeds</MenuItem> : null}
+            {Users.isAdmin(user) ? <MenuItem className="dropdown-item" eventKey="3" onClick={this.openModal('settings')}>Settings</MenuItem> : null}
+            {Users.isAdmin(user) ? <MenuItem className="dropdown-item" eventKey="4" onClick={this.openModal('feeds')}>Imported Feeds</MenuItem> : null}
             <MenuItem className="dropdown-item" eventKey="5" onClick={() => Meteor.logout(Accounts.ui._options.onSignedOutHook())}>Log Out</MenuItem>
           </Dropdown.Menu>
         </Dropdown>
@@ -159,7 +159,6 @@ UsersMenuWithFeed.propTypes = {
   user: React.PropTypes.object
 };
 
-module.exports = UsersMenuWithFeed;
 export default UsersMenuWithFeed;
 ```
 
