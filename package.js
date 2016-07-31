@@ -1,7 +1,7 @@
 Package.describe({
   name: "xavcz:nova-post-by-feed",
   summary: "Auto post via RSS to Nova, additional feature not part of core",
-  version: "0.26.5-nova",
+  version: "0.26.5-nova-patch-1",
   git: "https://github.com/xavcz/nova-post-by-feed.git"
 });
 
