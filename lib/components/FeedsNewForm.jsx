@@ -2,8 +2,10 @@ import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
 import { ListContainer } from "meteor/utilities:react-list-container";
+import Feeds from '../collection.js';
 
 const FeedsNewForm = (props, context) => {
+
   return (
     <div>
       <p>Add a new feed:</p>

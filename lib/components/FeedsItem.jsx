@@ -4,6 +4,8 @@ import { intlShape } from 'react-intl';
 import NovaForm from "meteor/nova:forms";
 import { DocumentContainer } from "meteor/utilities:react-list-container";
 
+import Feeds from '../collection.js';
+
 class FeedsItem extends Component {
 
   constructor(props) {
