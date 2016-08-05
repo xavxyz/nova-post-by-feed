@@ -26,13 +26,19 @@ class FeedsItem extends Component {
     return this.props.feed.createdFromSettings
           ? <span>This feed has been added from your settings.json file, you cannot edit or remove it the client. Please make your modifications in your settings file.</span>
           : <div className="post-stats">
-              <span className="posts-stats-item" title="Edit"><a onClick={this.editFeed}><Telescope.components.Icon name="pencil"/><span className="sr-only">Edit</span></a></span>
-              <span className="posts-stats-item" title="Delete"><a onClick={this.removeFeed}><Telescope.components.Icon name="close"/><span className="sr-only">Delete</span></a></span>
+              <Telescope.components.CanDo action="feeds.edit">
+                <span className="posts-stats-item" title="Edit"><a onClick={this.editFeed}><Telescope.components.Icon name="pencil"/><span className="sr-only">Edit</span></a></span>
+              </Telescope.components.CanDo>
+              <Telescope.components.CanDo action="feeds.delete">
+                <span className="posts-stats-item" title="Delete"><a onClick={this.removeFeed}><Telescope.components.Icon name="close"/><span className="sr-only">Delete</span></a></span>
+              </Telescope.components.CanDo>
             </div>
   }
 
   editFeed() {
-    this.setState({ edited: true });
+    if (Users.canDo(this.context.currentUser, 'feeds.edit')) {
+      this.setState({ edited: true });
+    }
   }
 
   cancelEdit(e) {
@@ -42,7 +48,7 @@ class FeedsItem extends Component {
 
   removeFeed() {
     const feed = this.props.feed;
-    if (window.confirm(`Delete feed “${ feed.title }”?`)) {
+    if (Users.canDo(this.context.currentUser, 'feeds.delete') && window.confirm(`Delete feed “${ feed.title }”?`)) {
       this.context.actions.call('feeds.deleteById', feed._id, (error, result) => {
         if (error) {
           this.context.messages.flash(error.message, "error");
@@ -61,28 +67,32 @@ class FeedsItem extends Component {
     return (
       <div className="posts-item">
 
-          { this.state.edited
+          { 
+            // could be done another way I think, a lot of code hard to read imo
+            this.state.edited
             ? <div>
-                <DocumentContainer
-                  collection={ Feeds }
-                  publication="feeds.single"
-                  selector={ { _id: feed._id } }
-                  terms={ { _id: feed._id } }
-                  joins={ Feeds.getJoins() }
-                  component={ NovaForm }
-                  componentProps={{
-                    collection: Feeds,
-                    currentUser,
-                    methodName: "feeds.edit",
-                    successCallback: () => {
-                      messages.flash("Feed edited.", "success");
-                      this.setState({ edited: false });
-                    },
-                  }}
-                />
-                <div>
-                  <span>Or <a onClick={this.cancelEdit}>cancel edition</a></span>
-                </div>
+                <Telescope.components.CanDo action="feeds.edit">
+                  <DocumentContainer
+                    collection={ Feeds }
+                    publication="feeds.single"
+                    selector={ { _id: feed._id } }
+                    terms={ { _id: feed._id } }
+                    joins={ Feeds.getJoins() }
+                    component={ NovaForm }
+                    componentProps={{
+                      collection: Feeds,
+                      currentUser,
+                      methodName: "feeds.edit",
+                      successCallback: () => {
+                        messages.flash("Feed edited.", "success");
+                        this.setState({ edited: false });
+                      },
+                    }}
+                  />
+                  <div>
+                    <span>Or <a onClick={this.cancelEdit}>cancel edition</a></span>
+                  </div>
+                </Telescope.components.CanDo>
               </div>
             : <div className="post-item-content">
                 <h3 className="posts-item-title">

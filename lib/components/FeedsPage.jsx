@@ -7,17 +7,24 @@ class FeedsPage extends Component {
   render() {
     return (
       <div className="feeds-edit-form">
-        <Telescope.components.FeedsNewForm />
+        <Telescope.components.CanDo action="feeds.new"> 
+          <Telescope.components.FeedsNewForm />
+        </Telescope.components.CanDo>
         
-        <ListContainer
-          collection={ Feeds }
-          publication="feeds.list"
-          selector={{}}
-          terms={{}}
-          joins={ Feeds.getJoins() }
-          component={ Telescope.components.FeedsList }
-          cacheSubscription={ false }
-        />
+        <Telescope.components.CanDo 
+          action="feeds.view"
+          displayNoPermissionMessage={true}
+        >
+          <ListContainer
+            collection={ Feeds }
+            publication="feeds.list"
+            selector={{}}
+            terms={{}}
+            joins={ Feeds.getJoins() }
+            component={ Telescope.components.FeedsList }
+            cacheSubscription={ false }
+          />
+        </Telescope.components.CanDo>
       </div>
     );
   }
