@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { intlShape } from 'react-intl';
 
+import Telescope from 'meteor/nova:lib';
 import NovaForm from "meteor/nova:forms";
 import { DocumentContainer } from "meteor/utilities:react-list-container";
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import Telescope from 'meteor/nova:lib';
 
 const FeedsList = ({results, currentUser, ready }) => {
   if (!!results.length) {

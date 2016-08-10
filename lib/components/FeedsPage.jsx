@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { ListContainer } from "meteor/utilities:react-list-container";
 import Feeds from '../collection.js';
+import Telescope from 'meteor/nova:lib';
 
 class FeedsPage extends Component {
 
