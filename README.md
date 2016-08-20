@@ -17,6 +17,12 @@ You can set up the feeds you want to fetch via your `settings.json` file (same l
 
 This package also comes with some components ready to use to help you manage RSS feeds. You need to import them in your app or custom package. You can place the components wherever you want, however the "master" one is `FeedsPage`.
 
+You can also set a default status for the posts to be imported, adding a new key in your `settings.json` file :
+```
+  // imported posts will be pending by default
+  "postByFeedDefaultStatus": 1
+```
+
 #### Example 1: `settings.json` (no UI)
 With this methods, you don't need to import the package's components anywhere. Just edit your `settings.json` file and add at the bottom of the file a `feeds` JSON-array field:
 ```
