@@ -1,7 +1,7 @@
 import React from 'react';
 import Telescope from 'meteor/nova:lib';
 
-const FeedsList = ({results, currentUser, ready }) => {
+const FeedsList = ({results, currentUser, ready}) => {
   if (!!results.length) {
     return (
       <div className="posts-list">
@@ -22,13 +22,11 @@ const FeedsList = ({results, currentUser, ready }) => {
     return (
       <div className="posts-list">
         <div className="posts-list-content">
-          <Telescope.components.PostsNoResults/>
+          No feeds to display.
         </div>
       </div>
     )  
   }
-  
 };
 
-module.exports = FeedsList;
 export default FeedsList;

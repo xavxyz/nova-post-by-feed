@@ -7,8 +7,8 @@ import Feeds from '../collection.js';
 const FeedsNewForm = (props, context) => {
 
   return (
-    <div>
-      <p>Add a new feed:</p>
+    <div style={{marginBottom: 15}}>
+      <h2>Add a new feed</h2>
       <ListContainer
         collection={ Feeds }
         publication="users.allAdmins" // subscribe to only admins or users
