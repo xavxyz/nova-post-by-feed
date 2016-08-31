@@ -73,25 +73,27 @@ class FeedsItem extends Component {
             this.state.edited
             ? <div>
                 <Telescope.components.CanDo action="feeds.edit">
-                  <DocumentContainer
-                    collection={ Feeds }
-                    publication="feeds.single"
-                    selector={ { _id: feed._id } }
-                    terms={ { _id: feed._id } }
-                    joins={ Feeds.getJoins() }
-                    component={ NovaForm }
-                    componentProps={{
-                      collection: Feeds,
-                      currentUser,
-                      methodName: "feeds.edit",
-                      successCallback: () => {
-                        messages.flash("Feed edited.", "success");
-                        this.setState({ edited: false });
-                      },
-                    }}
-                  />
                   <div>
-                    <span>Or <a onClick={this.cancelEdit}>cancel edition</a></span>
+                    <DocumentContainer
+                      collection={ Feeds }
+                      publication="feeds.single"
+                      selector={ { _id: feed._id } }
+                      terms={ { _id: feed._id } }
+                      joins={ Feeds.getJoins() }
+                      component={ NovaForm }
+                      componentProps={{
+                        collection: Feeds,
+                        currentUser,
+                        methodName: "feeds.edit",
+                        successCallback: () => {
+                          messages.flash("Feed edited.", "success");
+                          this.setState({ edited: false });
+                        },
+                      }}
+                    />
+                    <div>
+                      <span>Or <a onClick={this.cancelEdit}>cancel edition</a></span>
+                    </div>
                   </div>
                 </Telescope.components.CanDo>
               </div>
