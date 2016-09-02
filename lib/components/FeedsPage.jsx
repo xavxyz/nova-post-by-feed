@@ -24,6 +24,7 @@ class FeedsPage extends Component {
             joins={ Feeds.getJoins() }
             component={ Telescope.components.FeedsList }
             cacheSubscription={ false }
+            limit={0}
           />
         </Telescope.components.CanDo>
       </div>
