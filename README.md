@@ -59,144 +59,122 @@ You can extend a Nova base component (like in this [screencast](https://www.yout
 
 ```
 import Telescope from 'meteor/nova:lib';
-import NovaForm from "meteor/nova:forms";
-import { DocumentContainer } from "meteor/utilities:react-list-container";
-import Feeds from '../collection.js';
 import React, { PropTypes, Component } from 'react';
-import { intlShape } from 'react-intl';
-import { Button } from 'react-bootstrap';
+import { FormattedMessage } from 'react-intl';
+import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/std:accounts-ui';
+import { Modal, Dropdown, MenuItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+import { Router } from 'react-router';
+import Users from 'meteor/nova:users';
+import Core from "meteor/nova:core";
+const ContextPasser = Core.ContextPasser;
 
-class UsersMenuWithFeed extends Component {
+
+class UsersMenuWithFeed extends Telescope.components.UsersMenu {
 
   constructor(props) {
     super(props);
-    this.editFeed = this.editFeed.bind(this);
-    this.cancelEdit = this.cancelEdit.bind(this);
-    this.removeFeed = this.removeFeed.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
     this.state = {
-      edited: false,
+      modalOpen: {
+        settings: false,
+        feeds: false
+      }
     };
   }
 
-  renderCategories() {
-    return this.props.feed.categoriesArray ? <Telescope.components.PostsCategories post={ this.props.feed } /> : "";
+  openModal(modal) {
+    return (event) => {
+      const modalOpen = {};
+      modalOpen[modal] = true;
+      this.setState({ modalOpen });
+    };
   }
 
-  renderActions() {
-    return this.props.feed.createdFromSettings
-          ? <span>This feed has been added from your settings.json file, you cannot edit or remove it the client. Please make your modifications in your settings file.</span>
-          : <div className="post-stats">
-              <Telescope.components.CanDo action="feeds.edit">
-                <span className="posts-stats-item" title="Edit"><a onClick={this.editFeed}><Telescope.components.Icon name="pencil"/><span className="sr-only">Edit</span></a></span>
-              </Telescope.components.CanDo>
-              <Telescope.components.CanDo action="feeds.delete">
-                <span className="posts-stats-item" title="Delete"><a onClick={this.removeFeed}><Telescope.components.Icon name="close"/><span className="sr-only">Delete</span></a></span>
-              </Telescope.components.CanDo>
-            </div>
+  closeModal(modal) {
+    return (event) => {
+      const modalOpen = {};
+      modalOpen[modal] = false;
+      this.setState({ modalOpen });
+    };
   }
 
-  editFeed() {
-    if (Users.canDo(this.context.currentUser, 'feeds.edit')) {
-      this.setState({ edited: true });
-    }
+  renderSettingsModal() {
+
+    const SettingsEditForm = Telescope.components.SettingsEditForm;
+
+    return (
+      <Modal show={this.state.modalOpen.settings} onHide={this.closeModal('settings')}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Settings</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ContextPasser currentUser={this.props.user} messages={this.context.messages} actions={this.context.actions} track={this.context.track} closeCallback={this.closeModal('settings')}>
+            <SettingsEditForm/>
+          </ContextPasser>
+        </Modal.Body>
+      </Modal>
+    )
   }
 
-  cancelEdit(e) {
-    e.preventDefault();
-    this.setState({ edited: false });
-  }
+  renderFeedsModal() {
 
-  removeFeed() {
-    const feed = this.props.feed;
+    const FeedsPage = Telescope.components.FeedsPage;
 
-    if (Users.canDo(this.context.currentUser, 'feeds.delete') && window.confirm(`Delete feed “${ feed.title }”?`)) {
-      this.context.actions.call('feeds.deleteById', feed._id, (error, result) => {
-        if (error) {
-          this.context.messages.flash(error.message, "error");
-        } else {
-          this.context.messages.flash(`Feed “${ feed.title }” deleted.`, "success");
-          this.context.events.track("feed deleted", { _id: feed._id });
-        }
-      });
-    }
+    return (
+      <Modal bsSize='large' show={this.state.modalOpen.feeds} onHide={this.closeModal('feeds')}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Feeds</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ContextPasser currentUser={this.props.user} messages={this.context.messages} actions={this.context.actions} track={this.context.track}closeCallback={this.closeModal('feeds')}>
+            <FeedsPage/>
+          </ContextPasser>
+        </Modal.Body>
+      </Modal>
+    )
   }
 
   render() {
-    const { feed } = this.props;
-    const { currentUser, messages } = this.context;
+
+    ({UsersAvatar, UsersName} = Telescope.components);
+
+    const user = this.props.user;
+    const {currentUser} = this.context;
 
     return (
-      <div className="posts-item">
-
-          {
-            // could be done another way I think, a lot of code hard to read imo
-            this.state.edited
-            ? <div>
-                <Telescope.components.CanDo action="feeds.edit">
-                  <div>
-                    <DocumentContainer
-                      collection={ Feeds }
-                      publication="feeds.single"
-                      selector={ { _id: feed._id } }
-                      terms={ { _id: feed._id } }
-                      joins={ Feeds.getJoins() }
-                      component={ NovaForm }
-                      componentProps={{
-                        collection: Feeds,
-                        currentUser: currentUser,
-                        methodName: "feeds.edit",
-                        successCallback: (feed) => {
-                          messages.flash(`“${ feed.title }” feed successfully edited`, 'success');
-                          this.setState({ edited: false });
-                        },
-                      }}
-
-                    />
-                    <div className="cancel_button">
-                      <Button className="btn-secondary"><a onClick={this.cancelEdit}>Cancel</a></Button>
-                    </div>
-                  </div>
-                </Telescope.components.CanDo>
-              </div>
-            : <div className="post-item-content">
-                <h3 className="posts-item-title">
-                  <a className="posts-item-title-link" href={ feed.url }>{ feed.title ? feed.title : "Feed not fetched yet" }</a>
-                  { this.renderCategories() }
-                </h3>
-                <div className="feeds-item-link"><a href={ feed.url }>{feed.url }</a></div>
-
-                <div className="posts-item-meta">
-                  { feed.user
-                    ? (
-                      <div className="posts-item-user">
-                        <Telescope.components.UsersAvatar user={ feed.user } size="small"/>
-                        <Telescope.components.UsersName user={ feed.user }/>
-                      </div>
-                    ) : null }
-                  { this.renderActions() }
-                </div>
-              </div>
-          }
+      <div className="users-menu">
+        <Dropdown id="user-dropdown">
+          <Dropdown.Toggle>
+            <UsersAvatar size="small" user={user} link={false} />
+            <div>{Users.getDisplayName(currentUser)}</div>
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <LinkContainer to={`/users/${currentUser.telescope.slug}`}>
+              <MenuItem className="dropdown-item" eventKey="1"><FormattedMessage  id="users.profile"/></MenuItem>
+            </LinkContainer>
+            <LinkContainer to={`/account`}>
+              <MenuItem className="dropdown-item" eventKey="2"><FormattedMessage id="users.edit_account"/></MenuItem>
+            </LinkContainer>
+            {Users.isAdmin(user) ? <MenuItem className="dropdown-item" eventKey="4" onClick={this.openModal('feeds')}>Edit Feeds</MenuItem> : null}
+            <MenuItem className="dropdown-item" eventKey="5" onClick={() => Meteor.logout(Accounts.ui._options.onSignedOutHook())}><FormattedMessage id="users.log_out"/></MenuItem>
+          </Dropdown.Menu>
+        </Dropdown>
+        {this.renderSettingsModal()}
+        {this.renderFeedsModal()}
       </div>
     )
   }
 }
 
 UsersMenuWithFeed.propTypes = {
-  feed: React.PropTypes.object.isRequired
-};
-
-UsersMenuWithFeed.contextTypes = {
   currentUser: React.PropTypes.object,
-  actions: React.PropTypes.object,
-  events: React.PropTypes.object,
-  messages: React.PropTypes.object,
-  intl: intlShape
+  user: React.PropTypes.object
 };
 
-module.exports = UsersMenuWithFeed;
 export default UsersMenuWithFeed;
-
 ```
 
 **Note:** it's not recommended to edit the `nova:base-components` package as you might have conflict with Nova's updates.
