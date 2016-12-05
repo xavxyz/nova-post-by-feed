@@ -5,7 +5,7 @@
 This package lets you register RSS feeds that will be fetched every 30 minutes and create new posts automatically for you. You can assign an admin user and several categories to a feed.
 
 ## Install the package
-First, install the package in your Nova app, type: 
+First, install the package in your Nova app, type:
 ```bash
 meteor add xavcz:nova-post-by-feed
 ```
@@ -37,7 +37,7 @@ With this methods, you don't need to import the package's components anywhere. J
       "title": "Meteor Info"
     }
   ],
-  
+
 ```
 
 **Note:** a feeds entry **must contain a url key**, other fields are optional. You can add as many as you want.
@@ -58,15 +58,20 @@ You can extend a Nova base component (like in this [screencast](https://www.yout
 *In the following code, I tweaked the way the modal was opened/closed before to add a new type of modal.*
 
 ```
+import Telescope from 'meteor/nova:lib';
 import React, { PropTypes, Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/std:accounts-ui';
 import { Modal, Dropdown, MenuItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+import { Router } from 'react-router';
+import Users from 'meteor/nova:users';
 import Core from "meteor/nova:core";
-import UsersMenu from 'meteor/nova:base-components';
 const ContextPasser = Core.ContextPasser;
 
-class UsersMenuWithFeed extends UsersMenu {
+
+class UsersMenuWithFeed extends Telescope.components.UsersMenu {
 
   constructor(props) {
     super(props);
@@ -97,16 +102,16 @@ class UsersMenuWithFeed extends UsersMenu {
   }
 
   renderSettingsModal() {
-   
+
     const SettingsEditForm = Telescope.components.SettingsEditForm;
 
     return (
       <Modal show={this.state.modalOpen.settings} onHide={this.closeModal('settings')}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Settings</Modal.Title>
-        </Modal.Header>        
+        </Modal.Header>
         <Modal.Body>
-          <ContextPasser currentUser={this.props.user} closeCallback={this.closeModal('settings')}>
+          <ContextPasser currentUser={this.props.user} messages={this.context.messages} actions={this.context.actions} track={this.context.track} closeCallback={this.closeModal('settings')}>
             <SettingsEditForm/>
           </ContextPasser>
         </Modal.Body>
@@ -124,7 +129,7 @@ class UsersMenuWithFeed extends UsersMenu {
           <Modal.Title>Edit Feeds</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <ContextPasser currentUser={this.props.user} closeCallback={this.closeModal('feeds')}>
+          <ContextPasser currentUser={this.props.user} messages={this.context.messages} actions={this.context.actions} track={this.context.track}closeCallback={this.closeModal('feeds')}>
             <FeedsPage/>
           </ContextPasser>
         </Modal.Body>
@@ -137,31 +142,35 @@ class UsersMenuWithFeed extends UsersMenu {
     ({UsersAvatar, UsersName} = Telescope.components);
 
     const user = this.props.user;
+    const {currentUser} = this.context;
 
     return (
       <div className="users-menu">
         <Dropdown id="user-dropdown">
           <Dropdown.Toggle>
             <UsersAvatar size="small" user={user} link={false} />
-            <div>{Users.getDisplayName(user)}</div>
+            <div>{Users.getDisplayName(currentUser)}</div>
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <MenuItem className="dropdown-item" eventKey="1" href={Router.path("users.single", {slug: user.telescope.slug})}>Profile</MenuItem>
-            <MenuItem className="dropdown-item" eventKey="2" href={Router.path("account")}>Edit Account</MenuItem>
-            {Users.isAdmin(user) ? <MenuItem className="dropdown-item" eventKey="3" onClick={this.openModal('settings')}>Settings</MenuItem> : null}
-            {Users.isAdmin(user) ? <MenuItem className="dropdown-item" eventKey="4" onClick={this.openModal('feeds')}>Imported Feeds</MenuItem> : null}
-            <MenuItem className="dropdown-item" eventKey="5" onClick={() => Meteor.logout(Accounts.ui._options.onSignedOutHook())}>Log Out</MenuItem>
+            <LinkContainer to={`/users/${currentUser.telescope.slug}`}>
+              <MenuItem className="dropdown-item" eventKey="1"><FormattedMessage  id="users.profile"/></MenuItem>
+            </LinkContainer>
+            <LinkContainer to={`/account`}>
+              <MenuItem className="dropdown-item" eventKey="2"><FormattedMessage id="users.edit_account"/></MenuItem>
+            </LinkContainer>
+            {Users.isAdmin(user) ? <MenuItem className="dropdown-item" eventKey="4" onClick={this.openModal('feeds')}>Edit Feeds</MenuItem> : null}
+            <MenuItem className="dropdown-item" eventKey="5" onClick={() => Meteor.logout(Accounts.ui._options.onSignedOutHook())}><FormattedMessage id="users.log_out"/></MenuItem>
           </Dropdown.Menu>
         </Dropdown>
         {this.renderSettingsModal()}
         {this.renderFeedsModal()}
       </div>
-    ) 
+    )
   }
-
 }
 
 UsersMenuWithFeed.propTypes = {
+  currentUser: React.PropTypes.object,
   user: React.PropTypes.object
 };
 
@@ -172,4 +181,3 @@ export default UsersMenuWithFeed;
 
 ## Why not part of core?
 This is an additional feature that every Nova app doesn't need. For more information, see this PR: https://github.com/TelescopeJS/Telescope/pull/1321
-
